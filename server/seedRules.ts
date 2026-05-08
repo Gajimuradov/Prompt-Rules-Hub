@@ -1,0 +1,76 @@
+import type { Rule } from '../src/shared/ruleSchema.js';
+
+export const seedRules: Rule[] = [
+  {
+    id: 'base-ai-assistant-behavior',
+    title: 'Base AI assistant behavior',
+    category: 'security',
+    version: '1.0.0',
+    description: 'Baseline collaboration rules for any AI assistant working with the frontend codebase.',
+    content:
+      '## Role\nAct as a pragmatic senior frontend engineer. Read existing code before proposing changes and prefer local conventions over generic patterns.\n\n## Operating principles\n- Ask for clarification only when a wrong assumption would create meaningful risk.\n- Keep changes scoped to the requested behavior.\n- Preserve user edits and never rewrite unrelated files.\n- Explain tradeoffs briefly when there are multiple viable approaches.\n- Treat generated code as production code that must be readable, typed, and maintainable.\n\n## Safety\nDo not introduce secrets, hidden network calls, or broad permission changes. Surface security-sensitive assumptions explicitly.',
+    parentRuleIds: [],
+    tags: ['assistant', 'baseline', 'security'],
+    updatedAt: '2026-05-08T09:00:00.000Z'
+  },
+  {
+    id: 'frontend-react-typescript-rules',
+    title: 'Frontend React TypeScript rules',
+    category: 'frontend',
+    version: '1.1.0',
+    description: 'Core implementation rules for React and TypeScript work in the frontend application.',
+    content:
+      '## React\n- Prefer function components and hooks.\n- Keep component state local unless multiple screens need the same data.\n- Split reusable UI only when reuse is real or complexity becomes hard to scan.\n- Avoid effect chains for derived state; compute derived values during render with memoization only when needed.\n\n## TypeScript\n- Use explicit domain types for API data and state.\n- Avoid `any`; if it is unavoidable, isolate it and explain why.\n- Prefer discriminated unions for state machines and async states.\n- Keep shared contracts close to validation schemas when possible.\n\n## UX\nEvery async flow needs loading, error, and empty states. Forms should keep validation feedback close to the field or action that caused it.',
+    parentRuleIds: ['base-ai-assistant-behavior'],
+    tags: ['react', 'typescript', 'architecture'],
+    updatedAt: '2026-05-08T09:10:00.000Z'
+  },
+  {
+    id: 'component-api-rules',
+    title: 'Component API rules',
+    category: 'frontend',
+    version: '1.0.0',
+    description: 'Rules for designing reusable component props, events, and composition surfaces.',
+    content:
+      '## Component contracts\n- Props should describe domain intent, not implementation details.\n- Keep boolean props rare when combinations can create invalid states.\n- Prefer clear event names such as `onSubmit`, `onDismiss`, and `onSelectionChange`.\n- Use composition for flexible content regions and typed props for stable behavior.\n\n## Boundaries\nReusable components should not fetch data directly unless they represent a complete feature boundary. Presentational components should receive data and callbacks from their owner.\n\n## Accessibility\nInteractive components must expose accessible names, keyboard behavior, and visible focus states.',
+    parentRuleIds: ['frontend-react-typescript-rules'],
+    tags: ['components', 'api', 'accessibility'],
+    updatedAt: '2026-05-08T09:20:00.000Z'
+  },
+  {
+    id: 'code-review-checklist',
+    title: 'Code review checklist',
+    category: 'review',
+    version: '1.0.0',
+    description: 'Review checklist for AI-generated and human-authored frontend changes.',
+    content:
+      '## Review focus\n- Confirm that the change solves the stated user problem.\n- Check data flow, error handling, loading states, and edge cases.\n- Verify that naming matches existing project language.\n- Look for unnecessary abstractions, broad refactors, or hidden coupling.\n- Confirm that tests cover the highest-risk behavior.\n\n## Feedback style\nLead with concrete issues and file references. Separate blocking correctness problems from maintainability suggestions.',
+    parentRuleIds: ['base-ai-assistant-behavior', 'frontend-react-typescript-rules'],
+    tags: ['review', 'quality', 'pull-request'],
+    updatedAt: '2026-05-08T09:30:00.000Z'
+  },
+  {
+    id: 'testing-rules',
+    title: 'Testing rules',
+    category: 'testing',
+    version: '1.0.0',
+    description: 'Rules for choosing useful frontend test coverage without over-testing implementation details.',
+    content:
+      '## Test strategy\n- Test user-visible behavior before implementation details.\n- Cover validation, error branches, and data transformation logic.\n- Use integration tests for workflows that cross component or store boundaries.\n- Keep snapshot tests rare and targeted.\n\n## Test data\nUse named fixtures that explain intent. Avoid large anonymous blobs unless the shape itself is the point of the test.\n\n## AI-generated code\nWhen AI creates behavior, require either tests or a clear reason why manual verification is enough for the risk level.',
+    parentRuleIds: ['frontend-react-typescript-rules'],
+    tags: ['testing', 'coverage', 'fixtures'],
+    updatedAt: '2026-05-08T09:40:00.000Z'
+  },
+  {
+    id: 'design-system-usage-rules',
+    title: 'Design-system usage rules',
+    category: 'design-system',
+    version: '1.0.0',
+    description: 'Rules for using shared design-system patterns instead of one-off UI implementations.',
+    content:
+      '## Design-system first\n- Search for an existing component before building a custom one.\n- Use design tokens for color, spacing, typography, and elevation.\n- Keep spacing and layout rhythm consistent with nearby screens.\n- Do not create one-off visual variants unless the product requirement needs them.\n\n## Interaction quality\nUse familiar controls for familiar actions: tabs for views, checkboxes for multi-select, switches for binary settings, and buttons for clear commands.\n\n## Visual consistency\nNew screens should feel like part of the existing product, not a standalone landing page.',
+    parentRuleIds: ['frontend-react-typescript-rules'],
+    tags: ['design-system', 'ui', 'tokens'],
+    updatedAt: '2026-05-08T09:50:00.000Z'
+  }
+];
