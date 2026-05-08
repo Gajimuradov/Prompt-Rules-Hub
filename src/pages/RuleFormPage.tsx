@@ -40,7 +40,7 @@ const formatValidationError = (error: unknown): string => {
     return error.message;
   }
 
-  return 'Validation failed';
+  return 'Проверьте поля формы';
 };
 
 const splitTags = (value: string): string[] =>
@@ -140,7 +140,7 @@ export const RuleFormPage = ({ ruleId }: RuleFormPageProps) => {
     if (!validationResult.success) {
       setFormError(
         validationResult.error.issues
-          .map((issue) => `${issue.path.join('.') || 'form'}: ${issue.message}`)
+          .map((issue) => `${issue.path.join('.') || 'форма'}: ${issue.message}`)
           .join('\n')
       );
       return;
@@ -158,37 +158,37 @@ export const RuleFormPage = ({ ruleId }: RuleFormPageProps) => {
   };
 
   if (isEditMode && isRuleLoading) {
-    return <StatusBlock title="Loading rule" message="Preparing the edit form." />;
+    return <StatusBlock title="Загружаем правило" message="Готовим форму редактирования." />;
   }
 
   if (isEditMode && error && !isRuleLoading) {
-    return <StatusBlock title="Could not load rule" message={error} tone="error" />;
+    return <StatusBlock title="Не удалось загрузить правило" message={error} tone="error" />;
   }
 
   return (
     <form className={`${styles.panel} ${styles.form}`} onSubmit={handleSubmit}>
       {(formError || error) && (
         <StatusBlock
-          title="Could not save rule"
-          message={formError ?? error ?? 'Unknown form error'}
+          title="Не получилось сохранить правило"
+          message={formError ?? error ?? 'Проверьте данные и попробуйте еще раз.'}
           tone="error"
         />
       )}
 
       <section className={styles.formGrid}>
         <label className={styles.field}>
-          <span className={styles.label}>Title</span>
+          <span className={styles.label}>Название</span>
           <input
             className={styles.input}
             value={formState.title}
             onChange={(event) => updateField('title', event.target.value)}
-            placeholder="Component API rules"
+            placeholder="Правила API компонентов"
             required
           />
         </label>
 
         <label className={styles.field}>
-          <span className={styles.label}>Category</span>
+          <span className={styles.label}>Категория</span>
           <select
             className={styles.select}
             value={formState.category}
@@ -203,7 +203,7 @@ export const RuleFormPage = ({ ruleId }: RuleFormPageProps) => {
         </label>
 
         <label className={styles.field}>
-          <span className={styles.label}>Version</span>
+          <span className={styles.label}>Версия</span>
           <input
             className={styles.input}
             value={formState.version}
@@ -214,48 +214,48 @@ export const RuleFormPage = ({ ruleId }: RuleFormPageProps) => {
         </label>
 
         <label className={styles.field}>
-          <span className={styles.label}>Tags</span>
+          <span className={styles.label}>Теги</span>
           <input
             className={styles.input}
             value={formState.tagsInput}
             onChange={(event) => updateField('tagsInput', event.target.value)}
-            placeholder="react, review, testing"
+            placeholder="react, ревью, тесты"
           />
         </label>
 
         <label className={`${styles.field} ${styles.fieldWide}`}>
-          <span className={styles.label}>Description</span>
+          <span className={styles.label}>Короткое описание</span>
           <textarea
             className={styles.textarea}
             value={formState.description}
             onChange={(event) => updateField('description', event.target.value)}
-            placeholder="Explain when the team should use this rule."
+            placeholder="Коротко объясните, когда команде нужно это правило."
             required
           />
         </label>
 
         <label className={`${styles.field} ${styles.fieldWide}`}>
-          <span className={styles.label}>Content</span>
+          <span className={styles.label}>Текст правила</span>
           <textarea
             className={styles.textarea}
             value={formState.content}
             onChange={(event) => updateField('content', event.target.value)}
-            placeholder="Write Markdown instructions for the AI assistant."
+            placeholder="Напишите Markdown-инструкции для AI-ассистента."
             required
           />
         </label>
       </section>
 
       <section className={styles.field}>
-        <span className={styles.label}>Parent rules</span>
+        <span className={styles.label}>Родительские правила</span>
         <p className={styles.helpText}>
-          Parent rules are automatically included before this rule when context is composed.
+          Они автоматически попадут в итоговый контекст перед этим правилом.
         </p>
 
         {parentCandidates.length === 0 ? (
           <StatusBlock
-            title="No parent candidates"
-            message="Create more rules to enable inheritance."
+            title="Пока не из чего наследоваться"
+            message="Создайте еще одно правило, чтобы выстроить наследование."
           />
         ) : (
           <div className={styles.checkboxGrid}>
@@ -280,13 +280,13 @@ export const RuleFormPage = ({ ruleId }: RuleFormPageProps) => {
 
       <div className={styles.buttonRow}>
         <button className={styles.button} type="submit" disabled={isSaving}>
-          {isSaving ? 'Saving' : isEditMode ? 'Save changes' : 'Create rule'}
+          {isSaving ? 'Сохраняем' : isEditMode ? 'Сохранить изменения' : 'Создать правило'}
         </button>
         <a
           className={styles.secondaryButton}
           href={isEditMode && ruleId ? `#/rules/${encodeURIComponent(ruleId)}` : '#/'}
         >
-          Cancel
+          Отмена
         </a>
       </div>
     </form>

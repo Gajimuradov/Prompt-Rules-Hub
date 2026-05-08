@@ -1,4 +1,4 @@
-import type { ComposedContext, Rule } from '../src/shared/ruleSchema.js';
+import { categoryLabels, type ComposedContext, type Rule } from '../src/shared/ruleSchema.js';
 import { ApiError } from './errors.js';
 
 type ComposeOptions = {
@@ -7,10 +7,10 @@ type ComposeOptions = {
 
 const formatRuleMetadata = (rule: Rule): string[] => [
   `- ID: ${rule.id}`,
-  `- Category: ${rule.category}`,
-  `- Version: ${rule.version}`,
-  `- Tags: ${rule.tags.length > 0 ? rule.tags.join(', ') : 'none'}`,
-  `- Parent rules: ${rule.parentRuleIds.length > 0 ? rule.parentRuleIds.join(', ') : 'none'}`
+  `- Категория: ${categoryLabels[rule.category]}`,
+  `- Версия: ${rule.version}`,
+  `- Теги: ${rule.tags.length > 0 ? rule.tags.join(', ') : 'нет тегов'}`,
+  `- Родительские правила: ${rule.parentRuleIds.length > 0 ? rule.parentRuleIds.join(', ') : 'нет'}`
 ];
 
 export const composeContext = (
@@ -30,7 +30,7 @@ export const composeContext = (
     }
 
     if (activeRuleIds.has(ruleId)) {
-      throw new ApiError(409, `Circular parent rule reference detected at "${ruleId}"`);
+      throw new ApiError(409, `В наследовании правил найден цикл у "${ruleId}"`);
     }
 
     const rule = rulesById.get(ruleId);
@@ -61,13 +61,13 @@ export const composeContext = (
 
   const generatedAt = new Date().toISOString();
   const markdownParts = [
-    '# AI Assistant Context',
+    '# Контекст для AI-ассистента',
     '',
-    `Generated at: ${generatedAt}`,
-    `Selected rule IDs: ${selectedRuleIds.join(', ')}`,
-    `Included rules: ${orderedRules.length}`,
+    `Собрано: ${generatedAt}`,
+    `Выбранные правила: ${selectedRuleIds.join(', ')}`,
+    `Всего правил в контексте: ${orderedRules.length}`,
     '',
-    'Use these rules as the authoritative project context. Parent rules are included before child rules.'
+    'Используй эти правила как основной контекст проекта. Родительские правила уже добавлены перед дочерними.'
   ];
 
   orderedRules.forEach((rule, index) => {

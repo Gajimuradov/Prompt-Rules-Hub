@@ -51,18 +51,18 @@ export const navigateTo = (path: string) => {
 export const getRouteTitle = (route: AppRoute): string => {
   switch (route.name) {
     case 'rules-list':
-      return 'Rules list';
+      return 'Правила команды';
     case 'rule-details':
-      return 'Rule details';
+      return 'Карточка правила';
     case 'rule-create':
-      return 'Create rule';
+      return 'Новое правило';
     case 'rule-edit':
-      return 'Edit rule';
+      return 'Редактирование правила';
     case 'context-builder':
-      return 'Context builder';
+      return 'Сборка контекста';
     case 'export':
-      return 'Export';
+      return 'Экспорт';
     case 'not-found':
-      return 'Not found';
+      return 'Страница не найдена';
   }
 };

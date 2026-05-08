@@ -1,22 +1,32 @@
 # Prompt Rules Hub
 
-Prompt Rules Hub is a pet project for frontend teams that use AI assistants in daily development. It stores team rules for code style, component generation, reviews, testing, and design-system usage, then composes a final Markdown context that can be passed to an AI assistant.
+Prompt Rules Hub помогает frontend-команде держать правила для AI-ассистентов в одном месте: аккуратно, версионированно и без бесконечных копипаст из чатов.
 
-The project demonstrates a practical AI-assisted development workflow: rules are versioned, categorized, linked through inheritance, validated, and exported as Markdown or JSON.
+Это небольшой pet-проект, который показывает простую идею: промпты и правила для AI стоит хранить так же бережно, как код. У каждого правила есть категория, версия, описание, теги и наследование. Команда выбирает нужные правила, а приложение собирает готовый Markdown-контекст, который можно передать ChatGPT, Codex, Cursor или внутреннему ассистенту.
 
-## Why This Project Exists
+## Зачем это нужно
 
-Frontend teams often keep AI instructions in scattered documents, chats, repository notes, and personal snippets. That makes assistant output inconsistent: one developer asks for tests, another forgets design-system constraints, and code review expectations drift over time.
+В реальной frontend-команде правила быстро расползаются по разным местам: часть лежит в README, часть в Confluence, часть в pull request comments, часть у каждого разработчика в личных заметках. Из-за этого AI-ассистент каждый раз получает разный контекст и генерирует разный результат.
 
-Prompt Rules Hub gives the team a small internal tool to:
+Prompt Rules Hub решает эту проблему проще:
 
-- Keep assistant rules in one place.
-- Version and categorize rules.
-- Inherit shared base behavior from parent rules.
-- Compose a deterministic AI context for a task or workflow.
-- Export the context as Markdown or JSON for tools such as ChatGPT, Codex, Cursor, or internal assistants.
+- собирает правила команды в одном интерфейсе;
+- помогает разделить их по направлениям: frontend, тесты, review, дизайн-система, безопасность;
+- поддерживает наследование, чтобы базовые инструкции не дублировались в каждом правиле;
+- собирает итоговый Markdown-контекст в понятном порядке;
+- экспортирует результат в Markdown и JSON.
 
-## Stack
+## Что умеет приложение
+
+- показывает список правил с поиском и фильтром по категориям;
+- открывает подробную карточку правила с контентом, тегами, версией и родителями;
+- дает создать или отредактировать правило через форму с Zod-валидацией;
+- собирает контекст из выбранных правил и автоматически подтягивает parent rules;
+- показывает preview итогового Markdown;
+- экспортирует контекст в `.md` и `.json`;
+- хранит данные локально в JSON без базы данных.
+
+## Технологии
 
 - React
 - TypeScript
@@ -27,15 +37,40 @@ Prompt Rules Hub gives the team a small internal tool to:
 - Local JSON storage
 - CSS Modules
 
-## Features
+## Как запустить
 
-- Rules list with search, category filters, loading, error, and empty states.
-- Rule details page with metadata, parent rules, tags, and Markdown content preview.
-- Create and edit rule forms with shared Zod validation.
-- Context builder that selects rules, resolves parent rules, and composes final Markdown.
-- Export page for Markdown and JSON download/copy.
-- Express API with CRUD endpoints and context composition.
-- Seed rules for a frontend AI-assistant workflow.
+Установить зависимости:
+
+```bash
+npm install
+```
+
+Запустить frontend и backend одной командой:
+
+```bash
+npm run dev
+```
+
+Или отдельно:
+
+```bash
+npm run dev:server
+npm run dev:web
+```
+
+Адреса по умолчанию:
+
+- приложение: `http://127.0.0.1:5174`
+- API: `http://127.0.0.1:4000`
+
+Если открыть просто `http://127.0.0.1:4000`, вы увидите служебную страницу API. Пользовательский интерфейс живет на `5174`, а данные доступны по маршрутам `/api/...`, например `http://127.0.0.1:4000/api/rules`.
+
+Проверить типы и сборку:
+
+```bash
+npm run typecheck
+npm run build
+```
 
 ## API
 
@@ -48,84 +83,51 @@ DELETE /api/rules/:id
 POST   /api/context/compose
 ```
 
-## Getting Started
+## Где лежат данные
 
-Install dependencies:
-
-```bash
-npm install
-```
-
-Run frontend and backend together:
-
-```bash
-npm run dev
-```
-
-Or run them separately:
-
-```bash
-npm run dev:server
-npm run dev:web
-```
-
-Default URLs:
-
-- Frontend: `http://localhost:5174`
-- Backend: `http://localhost:4000`
-
-Type-check and build:
-
-```bash
-npm run typecheck
-npm run build
-```
-
-## Local Storage
-
-Rules are stored in:
+Правила хранятся в обычном JSON-файле:
 
 ```txt
 data/rules.json
 ```
 
-There is no database. The backend reads and writes this JSON file directly, which keeps the project easy to inspect during interviews.
+Такой формат выбран специально: на интервью легко открыть файл, показать seed data, объяснить storage-слой и обсудить, как заменить JSON на базу данных, если проект вырастет.
 
-## Interview Demo Scenarios
+## Что показать на интервью
 
-1. Show the rules list and explain how categories split team policies by workflow: frontend, testing, review, design-system, and security.
-2. Open a rule details page and point out versioning, parent rules, tags, and Markdown content.
-3. Create a new rule, for example "Accessibility review rules", and attach it to "Base AI assistant behavior".
-4. Edit a rule and show that frontend and backend share the same Zod validation model.
-5. Use Context Builder to select "Component API rules" and show that parent rules are pulled into the final context.
-6. Export the composed context as Markdown for an AI assistant and JSON for automation.
-7. Open the backend code and explain the local JSON storage tradeoff: simple for a pet project, replaceable with a database later.
+1. Открыть список правил и показать категории: frontend, тестирование, code review, дизайн-система и безопасность.
+2. Открыть карточку правила и объяснить модель: версия, теги, parent rules, Markdown-контент.
+3. Создать новое правило, например "Правила accessibility review", и привязать его к базовому поведению ассистента.
+4. Показать, что frontend и backend используют одну Zod-схему.
+5. В сборщике контекста выбрать "Правила API компонентов" и показать, что приложение само добавило родительские правила.
+6. Перейти в экспорт и скачать готовый Markdown для AI-ассистента.
+7. Открыть backend-код и объяснить архитектуру: Express API, JSON storage, отдельный context composer.
 
-## Architecture
+## Структура проекта
 
 ```txt
 server/
-  Express API, JSON storage, context composition
+  Express API, работа с JSON storage, сборка контекста
 
 src/shared/
-  Zod schemas and TypeScript types shared by frontend and backend
+  Общие Zod-схемы и TypeScript-типы
 
 src/api/
-  Typed frontend API client
+  Типизированный frontend API client
 
 src/store/
-  Zustand rules store
+  Zustand store для правил и собранного контекста
 
 src/pages/
-  App pages
+  Страницы приложения
 
 src/components/
-  Reusable UI components
+  Небольшие переиспользуемые UI-компоненты
 
 data/
-  Local JSON storage with seed rules
+  Локальное JSON-хранилище со стартовыми правилами
 ```
 
-## Notes For AI-Assisted Development
+## Главная идея
 
-The key product idea is that prompts should be treated like frontend code: typed, reviewed, versioned, composed, and exported in a predictable format. This project turns AI instructions from ad hoc text into a small rules system that can grow with a team.
+Разработка с AI-ассистентом работает заметно лучше, когда ассистент получает не случайный набор инструкций, а живой, поддерживаемый командой контекст. Prompt Rules Hub превращает правила для AI из разрозненного текста в понятную систему, которую можно развивать вместе с проектом.

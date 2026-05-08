@@ -11,23 +11,23 @@ export const ruleCategoryValues = [
 export const ruleCategorySchema = z.enum(ruleCategoryValues);
 
 export const categoryLabels: Record<RuleCategory, string> = {
-  frontend: 'Frontend',
-  testing: 'Testing',
-  review: 'Code review',
-  'design-system': 'Design system',
-  security: 'Security'
+  frontend: 'Фронтенд',
+  testing: 'Тестирование',
+  review: 'Ревью кода',
+  'design-system': 'Дизайн-система',
+  security: 'Безопасность'
 };
 
 export const ruleSchema = z.object({
-  id: z.string().min(1, 'Rule id is required'),
-  title: z.string().min(3, 'Title should contain at least 3 characters'),
+  id: z.string().min(1, 'Нужен идентификатор правила'),
+  title: z.string().min(3, 'Название должно быть не короче 3 символов'),
   category: ruleCategorySchema,
-  version: z.string().min(1, 'Version is required'),
-  description: z.string().min(10, 'Description should contain at least 10 characters'),
-  content: z.string().min(20, 'Content should contain at least 20 characters'),
+  version: z.string().min(1, 'Укажите версию правила'),
+  description: z.string().min(10, 'Описание должно быть не короче 10 символов'),
+  content: z.string().min(20, 'Контент должен быть не короче 20 символов'),
   parentRuleIds: z.array(z.string().min(1)).default([]),
   tags: z.array(z.string().min(1)).default([]),
-  updatedAt: z.string().datetime('updatedAt should be an ISO datetime')
+  updatedAt: z.string().datetime('updatedAt должен быть ISO-датой')
 });
 
 export const createRuleSchema = ruleSchema
@@ -40,7 +40,7 @@ export const createRuleSchema = ruleSchema
 export const updateRuleSchema = createRuleSchema.partial();
 
 export const composeContextRequestSchema = z.object({
-  ruleIds: z.array(z.string().min(1)).min(1, 'Select at least one rule'),
+  ruleIds: z.array(z.string().min(1)).min(1, 'Выберите хотя бы одно правило'),
   includeMetadata: z.boolean().default(true)
 });
 

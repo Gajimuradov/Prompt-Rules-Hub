@@ -11,7 +11,7 @@ import {
 } from '../shared/ruleSchema';
 
 const formatDate = (value: string): string =>
-  new Intl.DateTimeFormat('en', {
+  new Intl.DateTimeFormat('ru', {
     month: 'short',
     day: 'numeric',
     year: 'numeric'
@@ -49,11 +49,11 @@ export const RulesListPage = () => {
   );
 
   if (isRulesLoading && rules.length === 0) {
-    return <StatusBlock title="Loading rules" message="Reading local JSON storage from the API." />;
+    return <StatusBlock title="Загружаем правила" message="Читаем локальное JSON-хранилище через API." />;
   }
 
   if (error && rules.length === 0) {
-    return <StatusBlock title="Could not load rules" message={error} tone="error" />;
+    return <StatusBlock title="Не удалось загрузить правила" message={error} tone="error" />;
   }
 
   return (
@@ -62,7 +62,7 @@ export const RulesListPage = () => {
         <input
           className={styles.input}
           type="search"
-          placeholder="Search by title, tag, category, or version"
+          placeholder="Найти по названию, тегу, категории или версии"
           value={searchTerm}
           onChange={(event) => setSearchTerm(event.target.value)}
         />
@@ -71,7 +71,7 @@ export const RulesListPage = () => {
           value={categoryFilter}
           onChange={(event) => setCategoryFilter(event.target.value as RuleCategory | 'all')}
         >
-          <option value="all">All categories</option>
+          <option value="all">Все категории</option>
           {ruleCategoryValues.map((category) => (
             <option key={category} value={category}>
               {categoryLabels[category]}
@@ -79,24 +79,24 @@ export const RulesListPage = () => {
           ))}
         </select>
         <a className={styles.button} href="#/rules/new">
-          New rule
+          Новое правило
         </a>
       </section>
 
       {rules.length === 0 ? (
         <StatusBlock
-          title="No rules yet"
-          message="Create the first rule to start building reusable AI-assistant context."
+          title="Пока нет правил"
+          message="Добавьте первое правило, чтобы начать собирать контекст для AI-ассистента."
           action={
             <a className={styles.button} href="#/rules/new">
-              Create rule
+              Создать правило
             </a>
           }
         />
       ) : filteredRules.length === 0 ? (
         <StatusBlock
-          title="No matching rules"
-          message="Try a different search term or clear the category filter."
+          title="Ничего не нашли"
+          message="Попробуйте другой запрос или сбросьте фильтр по категории."
         />
       ) : (
         <section className={styles.rulesGrid}>
@@ -125,8 +125,8 @@ export const RulesListPage = () => {
               </div>
 
               <footer className={styles.cardFooter}>
-                <span>{rule.parentRuleIds.length} parents</span>
-                <span>Updated {formatDate(rule.updatedAt)}</span>
+                <span>{rule.parentRuleIds.length} родительских</span>
+                <span>Обновлено {formatDate(rule.updatedAt)}</span>
               </footer>
             </article>
           ))}

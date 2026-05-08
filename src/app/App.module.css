@@ -308,6 +308,20 @@
   border-color: #dbe3ee;
 }
 
+.includedRulePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 4px 8px;
+  border: 1px solid #dbe3ee;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #243246;
+  font-size: 0.84rem;
+  font-weight: 740;
+}
+
 .statusBlock {
   display: grid;
   gap: 10px;
@@ -477,17 +491,83 @@
   align-items: start;
 }
 
+.builderLayout {
+  height: calc(100dvh - 188px);
+  min-height: 580px;
+  align-items: stretch;
+  overflow: hidden;
+}
+
 .selectionPanel {
-  display: grid;
+  display: flex;
+  flex-direction: column;
   gap: 14px;
-  max-height: calc(100vh - 142px);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.rulesPickerScroll {
+  min-height: 0;
   overflow: auto;
+  padding-right: 4px;
+}
+
+.selectionActions {
+  flex-shrink: 0;
 }
 
 .previewPanel {
-  display: grid;
-  gap: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.contextStatGrid {
+  flex-shrink: 0;
+}
+
+.currentSelectionPanel {
+  flex-shrink: 0;
+  max-height: 126px;
+  overflow: auto;
+}
+
+.promptPanel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+  padding: 16px;
+  overflow: hidden;
+}
+
+.promptPanelHeader {
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.promptRulesRow {
+  flex-shrink: 0;
+  max-height: 46px;
+  overflow: auto;
+  padding-bottom: 2px;
+}
+
+.selectedRulesCompact {
+  flex-shrink: 0;
+  max-height: 36px;
+  overflow: auto;
+}
+
+.promptPreview {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+  overscroll-behavior: contain;
 }
 
 .statGrid {
@@ -497,7 +577,7 @@
 }
 
 .stat {
-  padding: 12px;
+  padding: 10px 12px;
   border-radius: 8px;
   background: #eef7f6;
   border: 1px solid #cce5e2;
@@ -506,7 +586,7 @@
 .statValue {
   display: block;
   color: #0f5f58;
-  font-size: 1.35rem;
+  font-size: 1.18rem;
   font-weight: 800;
 }
 
@@ -543,8 +623,36 @@
     grid-template-columns: 1fr;
   }
 
+  .builderLayout {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+
   .selectionPanel {
-    max-height: none;
+    overflow: visible;
+  }
+
+  .rulesPickerScroll {
+    max-height: 360px;
+  }
+
+  .previewPanel {
+    overflow: visible;
+  }
+
+  .currentSelectionPanel {
+    max-height: 180px;
+  }
+
+  .promptPanel {
+    min-height: 520px;
+    padding: 20px;
+  }
+
+  .promptPreview {
+    min-height: 320px;
+    max-height: 60dvh;
   }
 }
 

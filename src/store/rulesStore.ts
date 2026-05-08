@@ -30,7 +30,7 @@ type RulesState = {
 };
 
 const toErrorMessage = (error: unknown): string =>
-  error instanceof Error ? error.message : 'Unexpected error';
+  error instanceof Error ? error.message : 'Что-то пошло не так';
 
 export const useRulesStore = create<RulesState>((set) => ({
   rules: [],

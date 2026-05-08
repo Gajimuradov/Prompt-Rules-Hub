@@ -31,7 +31,7 @@ export const RuleDetailsPage = ({ ruleId }: RuleDetailsPageProps) => {
   const rule = activeRule?.id === ruleId ? activeRule : null;
 
   const handleDelete = async () => {
-    if (!window.confirm('Delete this rule? Child rules will lose this parent reference.')) {
+    if (!window.confirm('Удалить это правило? У дочерних правил пропадет ссылка на него.')) {
       return;
     }
 
@@ -44,21 +44,21 @@ export const RuleDetailsPage = ({ ruleId }: RuleDetailsPageProps) => {
   };
 
   if (isRuleLoading && !rule) {
-    return <StatusBlock title="Loading rule" message="Fetching rule details from the API." />;
+    return <StatusBlock title="Загружаем правило" message="Получаем карточку правила из API." />;
   }
 
   if (error && !rule) {
-    return <StatusBlock title="Could not load rule" message={error} tone="error" />;
+    return <StatusBlock title="Не удалось загрузить правило" message={error} tone="error" />;
   }
 
   if (!rule) {
     return (
       <StatusBlock
-        title="Rule not found"
-        message="The selected rule does not exist in local storage."
+        title="Правило не найдено"
+        message="В локальном хранилище нет такого правила."
         action={
           <a className={styles.secondaryButton} href="#/">
-            Back to rules
+            К списку правил
           </a>
         }
       />
@@ -83,7 +83,7 @@ export const RuleDetailsPage = ({ ruleId }: RuleDetailsPageProps) => {
           </div>
           <div className={styles.buttonRow}>
             <a className={styles.secondaryButton} href={`#/rules/${encodeURIComponent(rule.id)}/edit`}>
-              Edit
+              Редактировать
             </a>
             <button
               className={styles.dangerButton}
@@ -91,7 +91,7 @@ export const RuleDetailsPage = ({ ruleId }: RuleDetailsPageProps) => {
               disabled={isDeleting}
               onClick={handleDelete}
             >
-              {isDeleting ? 'Deleting' : 'Delete'}
+              {isDeleting ? 'Удаляем' : 'Удалить'}
             </button>
           </div>
         </div>
@@ -99,18 +99,18 @@ export const RuleDetailsPage = ({ ruleId }: RuleDetailsPageProps) => {
       </article>
 
       <aside className={styles.panel}>
-        <h3 className={styles.panelTitle}>Metadata</h3>
+        <h3 className={styles.panelTitle}>Детали</h3>
         <dl className={styles.metaList}>
           <div>
             <dt>ID</dt>
             <dd>{rule.id}</dd>
           </div>
           <div>
-            <dt>Updated</dt>
-            <dd>{new Date(rule.updatedAt).toLocaleString()}</dd>
+            <dt>Обновлено</dt>
+            <dd>{new Date(rule.updatedAt).toLocaleString('ru')}</dd>
           </div>
           <div>
-            <dt>Tags</dt>
+            <dt>Теги</dt>
             <dd>
               <span className={styles.pillRow}>
                 {rule.tags.length > 0
@@ -119,12 +119,12 @@ export const RuleDetailsPage = ({ ruleId }: RuleDetailsPageProps) => {
                         {tag}
                       </span>
                     ))
-                  : 'No tags'}
+                  : 'Без тегов'}
               </span>
             </dd>
           </div>
           <div>
-            <dt>Parent rules</dt>
+            <dt>Родительские правила</dt>
             <dd>
               {parentRules.length > 0 ? (
                 <span className={styles.pillRow}>
@@ -139,7 +139,7 @@ export const RuleDetailsPage = ({ ruleId }: RuleDetailsPageProps) => {
                   ))}
                 </span>
               ) : (
-                'No parent rules'
+                'Родительских правил нет'
               )}
             </dd>
           </div>

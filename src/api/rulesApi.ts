@@ -19,14 +19,14 @@ const isRecord = (value: unknown): value is Record<string, unknown> =>
 
 const getApiErrorMessage = (payload: unknown, fallbackStatus: number): string => {
   if (!isRecord(payload)) {
-    return `Request failed with status ${fallbackStatus}`;
+    return `Запрос завершился с ошибкой ${fallbackStatus}`;
   }
 
   const message = typeof payload.message === 'string' ? payload.message : null;
   const details = payload.details ?? payload.issues;
 
   if (!message) {
-    return `Request failed with status ${fallbackStatus}`;
+    return `Запрос завершился с ошибкой ${fallbackStatus}`;
   }
 
   if (!details) {

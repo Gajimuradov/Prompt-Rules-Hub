@@ -60,18 +60,18 @@ const validateRuleGraph = (rules: Rule[]) => {
     }
 
     if (activeRuleIds.has(rule.id)) {
-      throw new ApiError(409, `Circular parent rule reference detected at "${rule.id}"`);
+      throw new ApiError(409, `В наследовании правил найден цикл у "${rule.id}"`);
     }
 
     activeRuleIds.add(rule.id);
     for (const parentRuleId of rule.parentRuleIds) {
       if (parentRuleId === rule.id) {
-        throw new ApiError(400, 'A rule cannot inherit from itself');
+        throw new ApiError(400, 'Правило не может наследоваться от самого себя');
       }
 
       const parentRule = rulesById.get(parentRuleId);
       if (!parentRule) {
-        throw new ApiError(400, `Parent rule "${parentRuleId}" does not exist`);
+        throw new ApiError(400, `Родительское правило "${parentRuleId}" не найдено`);
       }
 
       visit(parentRule);
@@ -92,7 +92,7 @@ export const readRules = async (): Promise<Rule[]> => {
   const parsedRules = rulesCollectionSchema.safeParse(parsedJson);
 
   if (!parsedRules.success) {
-    throw new ApiError(500, 'Local rules storage is invalid', parsedRules.error.flatten());
+    throw new ApiError(500, 'Локальное хранилище правил повреждено', parsedRules.error.flatten());
   }
 
   validateRuleGraph(parsedRules.data);
@@ -124,7 +124,7 @@ export const updateRule = async (ruleId: string, input: UpdateRuleInput): Promis
   const existingRule = rules.find((rule) => rule.id === ruleId);
 
   if (!existingRule) {
-    throw new ApiError(404, 'Rule not found');
+    throw new ApiError(404, 'Правило не найдено');
   }
 
   const updatedRule: Rule = {
@@ -148,7 +148,7 @@ export const deleteRule = async (ruleId: string): Promise<void> => {
   const existingRule = rules.find((rule) => rule.id === ruleId);
 
   if (!existingRule) {
-    throw new ApiError(404, 'Rule not found');
+    throw new ApiError(404, 'Правило не найдено');
   }
 
   const nextRules = rules

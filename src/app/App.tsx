@@ -16,22 +16,22 @@ type NavItem = {
 
 const navItems: NavItem[] = [
   {
-    label: 'Rules',
+    label: 'Правила',
     href: '#/',
     matches: (route) => ['rules-list', 'rule-details', 'rule-create', 'rule-edit'].includes(route.name)
   },
   {
-    label: 'Context',
+    label: 'Контекст',
     href: '#/context',
     matches: (route) => route.name === 'context-builder'
   },
   {
-    label: 'Export',
+    label: 'Экспорт',
     href: '#/export',
     matches: (route) => route.name === 'export'
   },
   {
-    label: 'New rule',
+    label: 'Новое',
     href: '#/rules/new',
     matches: (route) => route.name === 'rule-create'
   }
@@ -54,11 +54,11 @@ const renderRoute = (route: AppRoute) => {
     case 'not-found':
       return (
         <StatusBlock
-          title="Page not found"
-          message="The requested view does not exist."
+          title="Такой страницы нет"
+          message="Похоже, ссылка устарела или в адресе есть ошибка."
           action={
             <a className={styles.button} href="#/">
-              Back to rules
+              К списку правил
             </a>
           }
         />
@@ -85,12 +85,12 @@ export const App = () => {
           <div>
             <h1 className={styles.brandTitle}>Prompt Rules Hub</h1>
             <p className={styles.brandText}>
-              Versioned AI-assistant rules for frontend teams.
+              Живые правила для AI-ассистентов frontend-команды.
             </p>
           </div>
         </div>
 
-        <nav className={styles.nav} aria-label="Primary navigation">
+        <nav className={styles.nav} aria-label="Основная навигация">
           {navItems.map((item) => (
             <a
               key={item.href}
@@ -108,7 +108,7 @@ export const App = () => {
           <div>
             <h2 className={styles.pageTitle}>{title}</h2>
             <p className={styles.pageSubtitle}>
-              Manage reusable prompt rules, resolve inheritance, and export deterministic assistant context.
+              Собирайте командные правила, связывайте их наследованием и отдавайте ассистенту понятный контекст без ручной копипасты.
             </p>
           </div>
         </header>

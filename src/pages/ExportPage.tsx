@@ -22,11 +22,11 @@ export const ExportPage = () => {
   if (!composedContext) {
     return (
       <StatusBlock
-        title="Nothing to export"
-        message="Build a context first, then return here to export Markdown or JSON."
+        title="Пока нечего экспортировать"
+        message="Сначала соберите контекст, а потом возвращайтесь сюда за Markdown и JSON."
         action={
           <a className={styles.button} href="#/context">
-            Open context builder
+            Открыть сборщик
           </a>
         }
       />
@@ -38,30 +38,30 @@ export const ExportPage = () => {
   const copy = async (contents: string, label: string) => {
     try {
       await navigator.clipboard.writeText(contents);
-      setCopyStatus(`${label} copied to clipboard`);
+      setCopyStatus(`${label} скопирован в буфер обмена`);
     } catch {
-      setCopyStatus(`Could not copy ${label}. Use the preview text instead.`);
+      setCopyStatus(`Не получилось скопировать ${label}. Текст можно взять из предпросмотра ниже.`);
     }
   };
 
   return (
     <section className={styles.previewPanel}>
-      {copyStatus && <StatusBlock title="Copied" message={copyStatus} />}
+      {copyStatus && <StatusBlock title="Готово" message={copyStatus} />}
 
       <section className={styles.statGrid}>
         <div className={styles.stat}>
           <span className={styles.statValue}>{composedContext.selectedRuleIds.length}</span>
-          <span className={styles.statLabel}>Selected rules</span>
+          <span className={styles.statLabel}>Выбрано правил</span>
         </div>
         <div className={styles.stat}>
           <span className={styles.statValue}>{composedContext.includedRules.length}</span>
-          <span className={styles.statLabel}>Included rules</span>
+          <span className={styles.statLabel}>Попало в контекст</span>
         </div>
         <div className={styles.stat}>
           <span className={styles.statValue}>
             {Math.round(composedContext.markdown.length / 100) / 10}k
           </span>
-          <span className={styles.statLabel}>Markdown characters</span>
+          <span className={styles.statLabel}>Символов в Markdown</span>
         </div>
       </section>
 
@@ -70,7 +70,7 @@ export const ExportPage = () => {
           <div className={styles.pageHeader}>
             <div>
               <h2 className={styles.panelTitle}>Markdown</h2>
-              <p className={styles.helpText}>Use this for chat-based assistants and code agents.</p>
+              <p className={styles.helpText}>Подходит для ChatGPT, Codex, Cursor и других code agents.</p>
             </div>
             <div className={styles.buttonRow}>
               <button
@@ -78,7 +78,7 @@ export const ExportPage = () => {
                 type="button"
                 onClick={() => copy(composedContext.markdown, 'Markdown')}
               >
-                Copy
+                Скопировать
               </button>
               <button
                 className={styles.button}
@@ -87,7 +87,7 @@ export const ExportPage = () => {
                   downloadFile('prompt-rules-context.md', composedContext.markdown, 'text/markdown')
                 }
               >
-                Download
+                Скачать
               </button>
             </div>
           </div>
@@ -98,7 +98,7 @@ export const ExportPage = () => {
           <div className={styles.pageHeader}>
             <div>
               <h2 className={styles.panelTitle}>JSON</h2>
-              <p className={styles.helpText}>Use this for automation or custom assistant pipelines.</p>
+              <p className={styles.helpText}>Удобно для автоматизации и внутренних пайплайнов.</p>
             </div>
             <div className={styles.buttonRow}>
               <button
@@ -106,14 +106,14 @@ export const ExportPage = () => {
                 type="button"
                 onClick={() => copy(jsonText, 'JSON')}
               >
-                Copy
+                Скопировать
               </button>
               <button
                 className={styles.button}
                 type="button"
                 onClick={() => downloadFile('prompt-rules-context.json', jsonText, 'application/json')}
               >
-                Download
+                Скачать
               </button>
             </div>
           </div>

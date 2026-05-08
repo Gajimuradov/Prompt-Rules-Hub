@@ -43,22 +43,22 @@ export const ContextBuilderPage = () => {
         includeMetadata
       });
     } catch {
-      // The store exposes the API error in-page.
+      // Ошибка уже выводится рядом с preview.
     }
   };
 
   if (isRulesLoading && rules.length === 0) {
-    return <StatusBlock title="Loading rules" message="Preparing context builder." />;
+    return <StatusBlock title="Загружаем правила" message="Готовим сборщик контекста." />;
   }
 
   if (rules.length === 0 && !isRulesLoading) {
     return (
       <StatusBlock
-        title="No rules available"
-        message="Create at least one rule before composing an AI context."
+        title="Пока нет правил"
+        message="Сначала создайте хотя бы одно правило, а потом соберите контекст для ассистента."
         action={
           <a className={styles.button} href="#/rules/new">
-            Create rule
+            Создать правило
           </a>
         }
       />
@@ -69,9 +69,9 @@ export const ContextBuilderPage = () => {
     <section className={styles.builderLayout}>
       <aside className={`${styles.panel} ${styles.selectionPanel}`}>
         <div>
-          <h2 className={styles.panelTitle}>Select rules</h2>
+          <h2 className={styles.panelTitle}>Выберите правила</h2>
           <p className={styles.helpText}>
-            Parent rules are resolved by the backend and included before selected child rules.
+            Сервер сам найдет родительские правила и поставит их перед выбранными дочерними.
           </p>
         </div>
 
@@ -82,12 +82,12 @@ export const ContextBuilderPage = () => {
             onChange={(event) => setIncludeMetadata(event.target.checked)}
           />
           <span>
-            <span className={styles.checkboxTitle}>Include metadata</span>
-            <span className={styles.checkboxMeta}>IDs, categories, versions, tags, and parents</span>
+            <span className={styles.checkboxTitle}>Добавить служебные детали</span>
+            <span className={styles.checkboxMeta}>ID, категории, версии, теги и родительские связи</span>
           </span>
         </label>
 
-        <div className={styles.checkboxGrid}>
+        <div className={`${styles.checkboxGrid} ${styles.rulesPickerScroll}`}>
           {rules.map((rule) => (
             <label key={rule.id} className={styles.checkboxCard}>
               <input
@@ -98,21 +98,21 @@ export const ContextBuilderPage = () => {
               <span>
                 <span className={styles.checkboxTitle}>{rule.title}</span>
                 <span className={styles.checkboxMeta}>
-                  {categoryLabels[rule.category]} - {rule.parentRuleIds.length} parents
+                  {categoryLabels[rule.category]} - родителей: {rule.parentRuleIds.length}
                 </span>
               </span>
             </label>
           ))}
         </div>
 
-        <div className={styles.buttonRow}>
+        <div className={`${styles.buttonRow} ${styles.selectionActions}`}>
           <button
             className={styles.button}
             type="button"
             disabled={contextSelection.length === 0 || isComposing}
             onClick={handleCompose}
           >
-            {isComposing ? 'Composing' : 'Compose context'}
+            {isComposing ? 'Собираем' : 'Собрать контекст'}
           </button>
           <button
             className={styles.secondaryButton}
@@ -120,68 +120,67 @@ export const ContextBuilderPage = () => {
             disabled={contextSelection.length === 0}
             onClick={() => setContextSelection([])}
           >
-            Clear
+            Очистить
           </button>
         </div>
       </aside>
 
       <main className={styles.previewPanel}>
-        {error && <StatusBlock title="Could not compose context" message={error} tone="error" />}
+        {error && <StatusBlock title="Контекст не собрался" message={error} tone="error" />}
 
-        <section className={styles.statGrid}>
+        <section className={`${styles.statGrid} ${styles.contextStatGrid}`}>
           <div className={styles.stat}>
             <span className={styles.statValue}>{rules.length}</span>
-            <span className={styles.statLabel}>Rules in hub</span>
+            <span className={styles.statLabel}>Правил в хабе</span>
           </div>
           <div className={styles.stat}>
             <span className={styles.statValue}>{selectedRules.length}</span>
-            <span className={styles.statLabel}>Selected</span>
+            <span className={styles.statLabel}>Выбрано</span>
           </div>
           <div className={styles.stat}>
             <span className={styles.statValue}>{composedContext?.includedRules.length ?? 0}</span>
-            <span className={styles.statLabel}>Included with parents</span>
+            <span className={styles.statLabel}>С учетом родителей</span>
           </div>
         </section>
 
-        {selectedRules.length > 0 && (
-          <section className={styles.panel}>
-            <h2 className={styles.panelTitle}>Current selection</h2>
-            <div className={styles.pillRow}>
-              {selectedRules.map((rule) => (
-                <span key={rule.id} className={styles.tagPill}>
-                  {rule.title}
-                </span>
-              ))}
-            </div>
-          </section>
-        )}
-
         {composedContext ? (
-          <section className={styles.panel}>
-            <div className={styles.pageHeader}>
+          <section className={`${styles.panel} ${styles.promptPanel}`}>
+            <div className={`${styles.pageHeader} ${styles.promptPanelHeader}`}>
               <div>
-                <h2 className={styles.panelTitle}>Markdown preview</h2>
+                <h2 className={styles.panelTitle}>Предпросмотр Markdown</h2>
                 <p className={styles.helpText}>
-                  The backend ordered parent rules before child rules.
+                  Родительские правила уже стоят перед дочерними.
                 </p>
               </div>
               <a className={styles.secondaryButton} href="#/export">
-                Open export
+                Перейти к экспорту
               </a>
             </div>
-            <div className={styles.pillRow}>
+            {selectedRules.length > 0 && (
+              <div className={`${styles.pillRow} ${styles.selectedRulesCompact}`}>
+                {selectedRules.map((rule) => (
+                  <span key={rule.id} className={styles.tagPill}>
+                    {rule.title}
+                  </span>
+                ))}
+              </div>
+            )}
+            <div className={`${styles.pillRow} ${styles.promptRulesRow}`}>
               {composedContext.includedRules.map((rule) => (
-                <span key={rule.id} className={styles.tagPill}>
-                  <CategoryPill category={rule.category} /> {rule.title}
+                <span key={rule.id} className={styles.includedRulePill}>
+                  <CategoryPill category={rule.category} />
+                  <span>{rule.title}</span>
                 </span>
               ))}
             </div>
-            <pre className={styles.markdownPreview}>{composedContext.markdown}</pre>
+            <pre className={`${styles.markdownPreview} ${styles.promptPreview}`}>
+              {composedContext.markdown}
+            </pre>
           </section>
         ) : (
           <StatusBlock
-            title="Preview is empty"
-            message="Select one or more rules and compose context to see the final Markdown."
+            title="Предпросмотр пока пустой"
+            message="Выберите одно или несколько правил и соберите контекст, чтобы увидеть готовый Markdown."
           />
         )}
       </main>

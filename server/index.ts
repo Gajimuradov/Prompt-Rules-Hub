@@ -16,6 +16,18 @@ const port = Number(process.env.PORT ?? 4000);
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
 
+app.get('/', (_request, response) => {
+  response.json({
+    name: 'Prompt Rules Hub API',
+    message: 'Это backend API. Интерфейс приложения открывается на http://127.0.0.1:5174.',
+    endpoints: {
+      health: '/api/health',
+      rules: '/api/rules',
+      composeContext: 'POST /api/context/compose'
+    }
+  });
+});
+
 app.get('/api/health', (_request, response) => {
   response.json({ status: 'ok' });
 });
@@ -39,7 +51,7 @@ app.get('/api/rules/:id', async (request, response, next) => {
     const rule = rules.find((candidateRule) => candidateRule.id === request.params.id);
 
     if (!rule) {
-      throw new ApiError(404, 'Rule not found');
+      throw new ApiError(404, 'Правило не найдено');
     }
 
     response.json(rule);
@@ -92,13 +104,13 @@ app.post('/api/context/compose', async (request, response, next) => {
 });
 
 app.use((_request, _response, next) => {
-  next(new ApiError(404, 'Route not found'));
+  next(new ApiError(404, 'Маршрут не найден'));
 });
 
 app.use((error: unknown, _request: Request, response: Response, _next: NextFunction) => {
   if (error instanceof ZodError) {
     response.status(400).json({
-      message: 'Validation failed',
+      message: 'Данные не прошли проверку',
       issues: error.flatten()
     });
     return;
@@ -113,9 +125,9 @@ app.use((error: unknown, _request: Request, response: Response, _next: NextFunct
   }
 
   console.error(error);
-  response.status(500).json({ message: 'Unexpected server error' });
+  response.status(500).json({ message: 'На сервере произошла неожиданная ошибка' });
 });
 
 app.listen(port, () => {
-  console.log(`Prompt Rules Hub API is running on http://localhost:${port}`);
+  console.log(`Prompt Rules Hub API запущен на http://127.0.0.1:${port}`);
 });
