@@ -39,7 +39,7 @@ export const RuleDetailsPage = ({ ruleId }: RuleDetailsPageProps) => {
       await deleteRule(ruleId);
       navigateTo('/');
     } catch {
-      // The store exposes the API error in-page.
+      // Ошибка уже выводится на странице через store.
     }
   };
 

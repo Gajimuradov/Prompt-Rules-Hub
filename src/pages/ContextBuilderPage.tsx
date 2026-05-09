@@ -71,7 +71,7 @@ export const ContextBuilderPage = () => {
         <div>
           <h2 className={styles.panelTitle}>Выберите правила</h2>
           <p className={styles.helpText}>
-            Сервер сам найдет родительские правила и поставит их перед выбранными дочерними.
+            Отметьте правила под задачу. Родительские инструкции добавятся автоматически.
           </p>
         </div>
 
@@ -97,8 +97,8 @@ export const ContextBuilderPage = () => {
             onChange={(event) => setIncludeMetadata(event.target.checked)}
           />
           <span>
-            <span className={styles.checkboxTitle}>Добавить служебные детали</span>
-            <span className={styles.checkboxMeta}>ID, категории, версии, теги и родительские связи</span>
+            <span className={styles.checkboxTitle}>Показать метаданные</span>
+            <span className={styles.checkboxMeta}>ID, категории, версии, теги и связи между правилами</span>
           </span>
         </label>
 
@@ -127,7 +127,7 @@ export const ContextBuilderPage = () => {
             disabled={contextSelection.length === 0 || isComposing}
             onClick={handleCompose}
           >
-            {isComposing ? 'Собираем' : 'Собрать контекст'}
+            {isComposing ? 'Собираем' : 'Собрать Markdown'}
           </button>
           <button
             className={styles.secondaryButton}
@@ -147,9 +147,9 @@ export const ContextBuilderPage = () => {
           <section className={`${styles.panel} ${styles.promptPanel}`}>
             <div className={`${styles.pageHeader} ${styles.promptPanelHeader}`}>
               <div>
-                <h2 className={styles.panelTitle}>Предпросмотр Markdown</h2>
+                <h2 className={styles.panelTitle}>Готовый контекст</h2>
                 <p className={styles.helpText}>
-                  Родительские правила уже стоят перед дочерними.
+                  Правила отсортированы так, чтобы базовые инструкции шли перед уточняющими.
                 </p>
               </div>
               <a className={styles.secondaryButton} href="#/export">
@@ -179,8 +179,8 @@ export const ContextBuilderPage = () => {
           </section>
         ) : (
           <StatusBlock
-            title="Предпросмотр пока пустой"
-            message="Выберите одно или несколько правил и соберите контекст, чтобы увидеть готовый Markdown."
+            title="Контекст еще не собран"
+            message="Выберите правила слева и соберите Markdown. Здесь появится текст, который можно передать AI-ассистенту."
           />
         )}
       </main>

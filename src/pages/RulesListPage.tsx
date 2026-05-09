@@ -47,6 +47,14 @@ export const RulesListPage = () => {
       ),
     [categoryFilter, rules, searchTerm]
   );
+  const categoryCount = useMemo(
+    () => new Set(rules.map((rule) => rule.category)).size,
+    [rules]
+  );
+  const inheritedRulesCount = useMemo(
+    () => rules.filter((rule) => rule.parentRuleIds.length > 0).length,
+    [rules]
+  );
 
   if (isRulesLoading && rules.length === 0) {
     return <StatusBlock title="Загружаем правила" message="Читаем локальное JSON-хранилище через API." />;
@@ -82,6 +90,23 @@ export const RulesListPage = () => {
           Новое правило
         </a>
       </section>
+
+      {rules.length > 0 && (
+        <section className={styles.summaryStrip}>
+          <div className={styles.summaryItem}>
+            <span className={styles.summaryValue}>{rules.length}</span>
+            <span className={styles.summaryLabel}>правил в базе</span>
+          </div>
+          <div className={styles.summaryItem}>
+            <span className={styles.summaryValue}>{categoryCount}</span>
+            <span className={styles.summaryLabel}>направлений команды</span>
+          </div>
+          <div className={styles.summaryItem}>
+            <span className={styles.summaryValue}>{inheritedRulesCount}</span>
+            <span className={styles.summaryLabel}>правил с наследованием</span>
+          </div>
+        </section>
+      )}
 
       {rules.length === 0 ? (
         <StatusBlock

@@ -70,7 +70,7 @@ export const ExportPage = () => {
           <div className={styles.pageHeader}>
             <div>
               <h2 className={styles.panelTitle}>Markdown</h2>
-              <p className={styles.helpText}>Подходит для ChatGPT, Codex, Cursor и других code agents.</p>
+              <p className={styles.helpText}>Подходит для ChatGPT, Codex, Cursor и других AI-инструментов.</p>
             </div>
             <div className={styles.buttonRow}>
               <button
@@ -98,7 +98,7 @@ export const ExportPage = () => {
           <div className={styles.pageHeader}>
             <div>
               <h2 className={styles.panelTitle}>JSON</h2>
-              <p className={styles.helpText}>Удобно для автоматизации и внутренних пайплайнов.</p>
+              <p className={styles.helpText}>Подходит для автоматизации, интеграций и внутренних ассистентов.</p>
             </div>
             <div className={styles.buttonRow}>
               <button

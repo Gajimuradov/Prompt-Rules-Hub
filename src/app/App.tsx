@@ -6,7 +6,7 @@ import { RuleDetailsPage } from '../pages/RuleDetailsPage';
 import { RuleFormPage } from '../pages/RuleFormPage';
 import { RulesListPage } from '../pages/RulesListPage';
 import { StatusBlock } from '../components/StatusBlock';
-import { getRouteTitle, parseRoute, type AppRoute } from './routes';
+import { getRouteSubtitle, getRouteTitle, parseRoute, type AppRoute } from './routes';
 
 type NavItem = {
   label: string;
@@ -21,7 +21,7 @@ const navItems: NavItem[] = [
     matches: (route) => ['rules-list', 'rule-details', 'rule-create', 'rule-edit'].includes(route.name)
   },
   {
-    label: 'Контекст',
+    label: 'Сборка',
     href: '#/context',
     matches: (route) => route.name === 'context-builder'
   },
@@ -31,7 +31,7 @@ const navItems: NavItem[] = [
     matches: (route) => route.name === 'export'
   },
   {
-    label: 'Новое',
+    label: '+ Правило',
     href: '#/rules/new',
     matches: (route) => route.name === 'rule-create'
   }
@@ -76,6 +76,7 @@ export const App = () => {
   }, []);
 
   const title = useMemo(() => getRouteTitle(route), [route]);
+  const subtitle = useMemo(() => getRouteSubtitle(route), [route]);
 
   return (
     <div className={styles.appShell}>
@@ -101,15 +102,20 @@ export const App = () => {
             </a>
           ))}
         </nav>
+
+        <section className={styles.sidebarHint}>
+          <span className={styles.sidebarHintLabel}>Демо-сценарий</span>
+          <p>
+            Выберите правило про API компонентов, соберите контекст и покажите, как подтягиваются родительские инструкции.
+          </p>
+        </section>
       </aside>
 
       <main className={styles.main}>
         <header className={styles.pageHeader}>
           <div>
             <h2 className={styles.pageTitle}>{title}</h2>
-            <p className={styles.pageSubtitle}>
-              Собирайте командные правила, связывайте их наследованием и отдавайте ассистенту понятный контекст без ручной копипасты.
-            </p>
+            <p className={styles.pageSubtitle}>{subtitle}</p>
           </div>
         </header>
         {renderRoute(route)}

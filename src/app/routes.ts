@@ -51,7 +51,7 @@ export const navigateTo = (path: string) => {
 export const getRouteTitle = (route: AppRoute): string => {
   switch (route.name) {
     case 'rules-list':
-      return 'Правила команды';
+      return 'Библиотека правил';
     case 'rule-details':
       return 'Карточка правила';
     case 'rule-create':
@@ -64,5 +64,24 @@ export const getRouteTitle = (route: AppRoute): string => {
       return 'Экспорт';
     case 'not-found':
       return 'Страница не найдена';
+  }
+};
+
+export const getRouteSubtitle = (route: AppRoute): string => {
+  switch (route.name) {
+    case 'rules-list':
+      return 'Единая база инструкций для AI-ассистентов: кодстайл, review, тесты, дизайн-система и безопасность.';
+    case 'rule-details':
+      return 'Проверьте содержание, версию, теги и родительские связи перед добавлением правила в контекст.';
+    case 'rule-create':
+      return 'Опишите правило так, чтобы другой разработчик понял, когда и зачем его подключать.';
+    case 'rule-edit':
+      return 'Обновите формулировки, связи и теги без потери структуры правила.';
+    case 'context-builder':
+      return 'Выберите нужные правила, а хаб сам добавит родителей и соберет готовый Markdown для ассистента.';
+    case 'export':
+      return 'Скопируйте или скачайте финальный контекст в формате, удобном для AI-инструмента или автоматизации.';
+    case 'not-found':
+      return 'Такого раздела нет. Вернитесь к библиотеке правил и продолжите работу оттуда.';
   }
 };
