@@ -32,6 +32,10 @@ type RulesState = {
 const toErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : 'Что-то пошло не так';
 
+const hasSameRuleIds = (firstRuleIds: string[], secondRuleIds: string[]): boolean =>
+  firstRuleIds.length === secondRuleIds.length &&
+  firstRuleIds.every((ruleId, index) => secondRuleIds[index] === ruleId);
+
 export const useRulesStore = create<RulesState>((set) => ({
   rules: [],
   activeRule: null,
@@ -129,7 +133,7 @@ export const useRulesStore = create<RulesState>((set) => ({
   },
 
   composeContext: async (input: ComposeContextRequest) => {
-    set({ isComposing: true, error: null, contextSelection: input.ruleIds });
+    set({ isComposing: true, error: null, contextSelection: input.ruleIds, composedContext: null });
 
     try {
       const composedContext = await rulesApi.composeContext(input);
@@ -143,7 +147,15 @@ export const useRulesStore = create<RulesState>((set) => ({
   },
 
   setContextSelection: (ruleIds: string[]) => {
-    set({ contextSelection: ruleIds });
+    set((state) => ({
+      contextSelection: ruleIds,
+      composedContext:
+        state.composedContext &&
+        hasSameRuleIds(ruleIds, state.composedContext.selectedRuleIds)
+          ? state.composedContext
+          : null,
+      error: null
+    }));
   },
 
   clearError: () => {

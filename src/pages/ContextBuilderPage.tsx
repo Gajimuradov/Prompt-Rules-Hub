@@ -75,6 +75,21 @@ export const ContextBuilderPage = () => {
           </p>
         </div>
 
+        <section className={`${styles.statGrid} ${styles.contextStatGrid}`}>
+          <div className={styles.stat}>
+            <span className={styles.statValue}>{rules.length}</span>
+            <span className={styles.statLabel}>Правил в хабе</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statValue}>{selectedRules.length}</span>
+            <span className={styles.statLabel}>Выбранные правила</span>
+          </div>
+          <div className={styles.stat}>
+            <span className={styles.statValue}>{composedContext?.includedRules.length ?? 0}</span>
+            <span className={styles.statLabel}>Правила с учетом родителей</span>
+          </div>
+        </section>
+
         <label className={styles.checkboxCard}>
           <input
             type="checkbox"
@@ -127,21 +142,6 @@ export const ContextBuilderPage = () => {
 
       <main className={styles.previewPanel}>
         {error && <StatusBlock title="Контекст не собрался" message={error} tone="error" />}
-
-        <section className={`${styles.statGrid} ${styles.contextStatGrid}`}>
-          <div className={styles.stat}>
-            <span className={styles.statValue}>{rules.length}</span>
-            <span className={styles.statLabel}>Правил в хабе</span>
-          </div>
-          <div className={styles.stat}>
-            <span className={styles.statValue}>{selectedRules.length}</span>
-            <span className={styles.statLabel}>Выбрано</span>
-          </div>
-          <div className={styles.stat}>
-            <span className={styles.statValue}>{composedContext?.includedRules.length ?? 0}</span>
-            <span className={styles.statLabel}>С учетом родителей</span>
-          </div>
-        </section>
 
         {composedContext ? (
           <section className={`${styles.panel} ${styles.promptPanel}`}>
